@@ -17,7 +17,7 @@
    </head>
    <body>
       <div id="map"></div>
-      <div id='geocoder' class='mapboxgl-ctrl-geocoder'></div>
+      <div id="geocoder" class="mapboxgl-ctrl-geocoder"></div>
       <button type="button" style="z-index:3; position: absolute; bottom:400px; right: 12px;" class="btn btn--s btn--red" onclick="changerOui()">Changer style</button>
       <button type="button" style="z-index:3; position: absolute; bottom:370px; right: 12px;" class="btn btn--s btn--red" onclick="changerNon()">Style défaut</button>
       <button type="button" style="z-index:3; position: absolute; bottom:340px; right: 12px;" class="btn btn--s"  onclick="masquerOui()">Masquer</button>
@@ -26,18 +26,18 @@
       <button type="button" style="z-index:3; position: absolute; bottom:250px; right: 12px;" class="btn btn--s btn--green" onclick="filtrerNon()">Ne plus filtrer</button>
       <button type="button" style="z-index:3; position: absolute; bottom:220px; right: 12px;" class="btn btn--s btn--orange" id="bouton-masquer" onclick="zoomToulouse()">Zoom sur Toulouse</button>
 
-<div style="z-index:3; position: absolute; bottom: 48px; right: 12px;" class='w300 round bg-white shadow-darken10 px12 py12 txt-s'>
-  <strong class='block mb6'>Prix moyen au m² en 2018</strong>
-  <div class='grid mb6'>
-    <div style= "background: linear-gradient(to right, #00bdd6 0%, #00bdd6 0%, #ffd54d 50%,#f44034 95%,#b71c1c 100%)" class='col h12 opacity75'></div>
+<div style="z-index:3; position: absolute; bottom: 48px; right: 12px;" class="w300 round bg-white shadow-darken10 px12 py12 txt-s">
+  <strong class="block mb6">Prix moyen au m² en 2018</strong>
+  <div class="grid mb6">
+    <div style= "background: linear-gradient(to right, #00bdd6 0%, #00bdd6 0%, #ffd54d 50%,#f44034 95%,#b71c1c 100%)" class="col h12 opacity75"></div>
 
   </div>
-  <div class='grid txt-xs'>
-    <div class='col flex-child--grow'>500€</div>
-    <div class='col flex-child--grow align-center'>2 500€</div>
-    <div class='col flex-child--grow align-r'>6 000€+</div>
+  <div class="grid txt-xs">
+    <div class="col flex-child--grow">500€</div>
+    <div class="col flex-child--grow align-center">2 500€</div>
+    <div class="col flex-child--grow align-r">6 000€+</div>
   </div>
-<div class='txt-xs opacity75'>Source : Demande de Valeurs Foncières (DVF)</div>
+<div class="txt-xs opacity75">Source : Demande de Valeurs Foncières (DVF)</div>
 </div>
 
 
@@ -45,7 +45,7 @@
            // access token
            mapboxgl.accessToken = 'pk.eyJ1IjoiamFpcnNvbiIsImEiOiJjazhvZHAwcGowdDA3M21yeHAwdHUwYXp4In0.-gJk9r_w3o1F3A5ns6UQGw';
 
-           // importer la carte le document html
+           // importer la carte dans le document html
            var map = new mapboxgl.Map({
            	// container id
            	container: 'map',
@@ -196,7 +196,7 @@ function zoomToulouse() {
 	map.flyTo({center: [1.444534047371576, 43.604540410959885], zoom: 11.5});
 }
 
-// importer une ou plusieurs couches qui sont stocker dans un site web
+// importer une ou plusieurs couches qui sont stockées dans un site web
 map.on('load', function () {
  map.addSource('importation-dvf-iris-toulouse', {
    'type': 'geojson',

@@ -17,7 +17,7 @@
    </head>
    <body>
       <div id="map"></div>
-      <div id='geocoder' class='mapboxgl-ctrl-geocoder'></div>
+      <div id="geocoder" class="mapboxgl-ctrl-geocoder"></div>
       <button type="button" style="z-index:3; position: absolute; bottom:400px; right: 12px;" class="btn btn--s btn--red" onclick="changerOui()">Changer style</button>
       <button type="button" style="z-index:3; position: absolute; bottom:370px; right: 12px;" class="btn btn--s btn--red" onclick="changerNon()">Style défaut</button>
       <button type="button" style="z-index:3; position: absolute; bottom:340px; right: 12px;" class="btn btn--s"  onclick="masquerOui()">Masquer</button>
@@ -26,18 +26,18 @@
       <button type="button" style="z-index:3; position: absolute; bottom:250px; right: 12px;" class="btn btn--s btn--green" onclick="filtrerNon()">Ne plus filtrer</button>
       <button type="button" style="z-index:3; position: absolute; bottom:220px; right: 12px;" class="btn btn--s btn--orange" id="bouton-masquer" onclick="zoomToulouse()">Zoom sur Toulouse</button>
 
-<div style="z-index:3; position: absolute; bottom: 48px; right: 12px;" class='w300 round bg-white shadow-darken10 px12 py12 txt-s'>
-  <strong class='block mb6'>Part de logements sociaux en 2015</strong>
-  <div class='grid mb6'>
-    <div style= "background: linear-gradient(to right, #ffffff 0%,#f44336 60%,#b71c1c 100%)" class='col h12 opacity75'></div>
+<div style="z-index:3; position: absolute; bottom: 48px; right: 12px;" class="w300 round bg-white shadow-darken10 px12 py12 txt-s">
+  <strong class="block mb6">Part de logements sociaux en 2015</strong>
+  <div class="grid mb6">
+    <div style= "background: linear-gradient(to right, #ffffff 0%,#f44336 60%,#b71c1c 100%)" class="col h12 opacity75"></div>
 
   </div>
-  <div class='grid txt-xs'>
-    <div class='col flex-child--grow'>0%</div>
-    <div class='col flex-child--grow align-center'>30%</div>
-    <div class='col flex-child--grow align-r'>100%</div>
+  <div class="grid txt-xs">
+    <div class="col flex-child--grow">0%</div>
+    <div class="col flex-child--grow align-center">30%</div>
+    <div class="col flex-child--grow align-r">100%</div>
   </div>
-<div class='txt-xs opacity75'>Source : Insee, Données Carroyées</div>
+<div class="txt-xs opacity75">Source : Insee, Données Carroyées</div>
 </div>
 
 
@@ -45,7 +45,7 @@
            // access token
            mapboxgl.accessToken = 'pk.eyJ1IjoiamFpcnNvbiIsImEiOiJjazhvZHAwcGowdDA3M21yeHAwdHUwYXp4In0.-gJk9r_w3o1F3A5ns6UQGw';
 
-           // importer la carte le document html
+           // importer la carte dans le document html
            var map = new mapboxgl.Map({
            	// container id
            	container: 'map',
