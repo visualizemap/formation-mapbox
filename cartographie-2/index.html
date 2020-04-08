@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <title>Cartographie 2</title>
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+      <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+      <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+      <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
+      <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css" type="text/css"/>
+      <style>
+         body { margin: 0; padding: 0; }
+         #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+      </style>
+   </head>
+   <body>
+      <div id="map"></div>
+      <div id='geocoder' class='mapboxgl-ctrl-geocoder'></div>
+      <button type="button" style="z-index:3; position: absolute; bottom:400px; right: 12px;" class="btn btn--s btn--red" onclick="changerOui()">Changer style</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:370px; right: 12px;" class="btn btn--s btn--red" onclick="changerNon()">Style défaut</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:340px; right: 12px;" class="btn btn--s"  onclick="masquerOui()">Masquer</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:310px; right: 12px;" class="btn btn--s"  onclick="masquerNon()">Démasquer</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:280px; right: 12px;" class="btn btn--s btn--green" onclick="filtrerOui()">Filtrer</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:250px; right: 12px;" class="btn btn--s btn--green" onclick="filtrerNon()">Ne plus filtrer</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:220px; right: 12px;" class="btn btn--s btn--orange" id="bouton-masquer" onclick="zoomToulouse()">Zoom sur Toulouse</button>
+
+<div style="z-index:3; position: absolute; bottom: 48px; right: 12px;" class='w300 round bg-white shadow-darken10 px12 py12 txt-s'>
+  <strong class='block mb6'>Part de logements sociaux en 2015</strong>
+  <div class='grid mb6'>
+    <div style= "background: linear-gradient(to right, #ffffff 0%,#f44336 60%,#b71c1c 100%)" class='col h12 opacity75'></div>
+
+  </div>
+  <div class='grid txt-xs'>
+    <div class='col flex-child--grow'>0%</div>
+    <div class='col flex-child--grow align-center'>30%</div>
+    <div class='col flex-child--grow align-r'>100%</div>
+  </div>
+<div class='txt-xs opacity75'>Source : Insee, Données Carroyées</div>
+</div>
+
+
+      <script>
+           // access token
+           mapboxgl.accessToken = 'pk.eyJ1IjoiamFpcnNvbiIsImEiOiJjazhvZHAwcGowdDA3M21yeHAwdHUwYXp4In0.-gJk9r_w3o1F3A5ns6UQGw';
+
+           // importer la carte le document html
+           var map = new mapboxgl.Map({
+           	// container id
+           	container: 'map',
+           	// style de la carte
+           	style: 'mapbox://styles/jairson/ck8pi7b620dx51inx0i8c3a78',
+           	// localisation et zoom par défaut
+           	center: [4.859171776685287, 45.73291396168358],
+            // rotation de la caméra
+            pitch: 40,
+           	// zoom par défaut
+           	zoom: 8,
+           	// copyright (afficher le copyright oui ou non)
+           	attributionControl: true
+           });
+
+            // bouton de navigation
+            map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+            // mode plein écran
+            map.addControl(new mapboxgl.FullscreenControl({
+            	container: document.querySelector('html')
+            }), 'top-right');
+
+            // bouton de géolocalisation
+            map.addControl(
+            	new mapboxgl.GeolocateControl({
+            		positionOptions: {
+            			enableHighAccuracy: true
+            		},
+            		trackUserLocation: true
+            	}),
+            	'top-right');
+
+            // échelle de la carte (en mètres)
+            var scale = new mapboxgl.ScaleControl({
+            	maxWidth: 150,
+            	unit: 'imperial',
+            });
+
+            map.addControl(scale, 'bottom-left');
+            scale.setUnit('metric');
+
+map.addControl(new MapboxGeocoder({
+	accessToken: mapboxgl.accessToken,
+	zoom: 8.5,
+	language: 'fr',
+	// countries: 'fr',
+	placeholder: 'Rechercher un lieu',
+	collapsed: false,
+	mapboxgl: mapboxgl
+}), 'top-left');
+
+// ajouter un popup lorsque l’on clique sur une couche de la carte
+map.on('click', function (e) {
+	var features = map.queryRenderedFeatures(e.point, {
+		layers: ['carreaux']
+	});
+	if (!features.length) {
+		return;
+	}
+
+	var feature = features[0];
+
+	var popup = new mapboxgl.Popup({
+			closeButton: true
+		}) // afficher un bouton de fermeture du popup
+		.setLngLat(map.unproject(e.point))
+		// intégrer du code html dans le popup
+		.setHTML(
+			'<div>Total population : ' + feature.properties.ind + '</div>' +
+			'<div>Niveaux de vie annuel moyen : ' + feature.properties.niv_vie + '€</div>' +
+			'<div>Part de logements sociaux : ' + feature.properties.log_socp + '%</div>'
+		)
+		.addTo(map)
+		// configurer la largeur maximum du popup
+		.setMaxWidth("300px");
+});
+
+map.on('mousemove', function (e) {
+	var features = map.queryRenderedFeatures(e.point, {
+		layers: ['carreaux']
+	});
+	map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+});
+
+
+// masquer une couche
+function masquerOui() {
+	map.setLayoutProperty('dvf-iris', 'visibility', 'none');
+}
+// démasquer une couche
+function masquerNon() {
+	map.setLayoutProperty('dvf-iris', 'visibility', 'visible');
+}
+// changer le style d’une couche
+function changerOui() {
+	map.setPaintProperty('dvf-iris', 'fill-color', ['interpolate', ['linear'],
+		['get', 'p16_log'], 0, '#00bcd4', 2000, '#f44336'
+	]);
+}
+// revenir au style initial de la couche
+function changerNon() {
+	map.setPaintProperty('dvf-iris', 'fill-color', ['interpolate', ['linear'],
+		['get', 'a_prix_m2_2018'], 0, '#ffffff', 500, '#00bdd6', 2500, '#ffd54d', 5000, '#f44034', 6000, '#b71c1c'
+	]);
+}
+// filtrer les données de plusieurs couches
+function filtrerOui() {
+	map.setFilter('dvf-iris', ['==', 'dep', '69']);
+	map.setFilter('dvf-iris-lignes', ['==', 'dep', '69']);
+	map.setFilter('dvf-iris-points', ['==', 'dep', '69']);
+}
+// ne plus filtrer les couches (revenir aux données initiales des couches)
+function filtrerNon() {
+	map.setFilter('dvf-iris', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
+	map.setFilter('dvf-iris-lignes', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
+	map.setFilter('dvf-iris-points', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
+}
+function zoomToulouse() {
+	map.flyTo({center: [1.444534047371576, 43.604540410959885], zoom: 11.5});
+}
+
+      </script>
+   </body>
+</html>

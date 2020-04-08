@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <title>Cartographie 1</title>
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+      <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+      <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+      <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
+      <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css" type="text/css"/>
+      <style>
+         body { margin: 0; padding: 0; }
+         #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+      </style>
+   </head>
+   <body>
+      <div id="map"></div>
+      <div id='geocoder' class='mapboxgl-ctrl-geocoder'></div>
+      <button type="button" style="z-index:3; position: absolute; bottom:400px; right: 12px;" class="btn btn--s btn--red" onclick="changerOui()">Changer style</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:370px; right: 12px;" class="btn btn--s btn--red" onclick="changerNon()">Style défaut</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:340px; right: 12px;" class="btn btn--s"  onclick="masquerOui()">Masquer</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:310px; right: 12px;" class="btn btn--s"  onclick="masquerNon()">Démasquer</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:280px; right: 12px;" class="btn btn--s btn--green" onclick="filtrerOui()">Filtrer</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:250px; right: 12px;" class="btn btn--s btn--green" onclick="filtrerNon()">Ne plus filtrer</button>
+      <button type="button" style="z-index:3; position: absolute; bottom:220px; right: 12px;" class="btn btn--s btn--orange" id="bouton-masquer" onclick="zoomToulouse()">Zoom sur Toulouse</button>
+
+<div style="z-index:3; position: absolute; bottom: 48px; right: 12px;" class='w300 round bg-white shadow-darken10 px12 py12 txt-s'>
+  <strong class='block mb6'>Prix moyen au m² en 2018</strong>
+  <div class='grid mb6'>
+    <div style= "background: linear-gradient(to right, #00bdd6 0%, #00bdd6 0%, #ffd54d 50%,#f44034 95%,#b71c1c 100%)" class='col h12 opacity75'></div>
+
+  </div>
+  <div class='grid txt-xs'>
+    <div class='col flex-child--grow'>500€</div>
+    <div class='col flex-child--grow align-center'>2 500€</div>
+    <div class='col flex-child--grow align-r'>6 000€+</div>
+  </div>
+<div class='txt-xs opacity75'>Source : Demande de Valeurs Foncières (DVF)</div>
+</div>
+
+
+      <script>
+           // access token
+           mapboxgl.accessToken = 'pk.eyJ1IjoiamFpcnNvbiIsImEiOiJjazhvZHAwcGowdDA3M21yeHAwdHUwYXp4In0.-gJk9r_w3o1F3A5ns6UQGw';
+
+           // importer la carte le document html
+           var map = new mapboxgl.Map({
+           	// container id
+           	container: 'map',
+           	// style de la carte
+           	style: 'mapbox://styles/jairson/ck8oh7bf5022o1iphnvv1d0hy',
+           	// localisation et zoom par défaut
+           	center: [4.859171776685287, 45.73291396168358],
+           	// zoom par défaut
+           	zoom: 8,
+           	// copyright (afficher le copyright oui ou non)
+           	attributionControl: true
+           });
+
+            // bouton de navigation
+            map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+            // mode plein écran
+            map.addControl(new mapboxgl.FullscreenControl({
+            	container: document.querySelector('html')
+            }), 'top-right');
+
+            // bouton de géolocalisation
+            map.addControl(
+            	new mapboxgl.GeolocateControl({
+            		positionOptions: {
+            			enableHighAccuracy: true
+            		},
+            		trackUserLocation: true
+            	}),
+            	'top-right');
+
+            // échelle de la carte (en mètres)
+            var scale = new mapboxgl.ScaleControl({
+            	maxWidth: 150,
+            	unit: 'imperial',
+            });
+
+            map.addControl(scale, 'bottom-left');
+            scale.setUnit('metric');
+
+map.addControl(new MapboxGeocoder({
+	accessToken: mapboxgl.accessToken,
+	zoom: 8.5,
+	language: 'fr',
+	// countries: 'fr',
+	placeholder: 'Rechercher un lieu',
+	collapsed: false,
+	mapboxgl: mapboxgl
+}), 'top-left');
+
+// ajouter un popup lorsque l’on clique sur une couche de la carte
+map.on('click', function (e) {
+	var features = map.queryRenderedFeatures(e.point, {
+		layers: ['dvf-iris','dvf-iris-toulouse']
+	});
+	if (!features.length) {
+		return;
+	}
+
+	var feature = features[0];
+
+	var popup = new mapboxgl.Popup({
+			closeButton: true
+		}) // afficher un bouton de fermeture du popup
+		.setLngLat(map.unproject(e.point))
+		// intégrer du code html dans le popup
+		.setHTML(
+			'<div>' + feature.properties.nom_iris + '</div>' +
+			'<div>' + feature.properties.code_iris + '</div>' +
+			'<div>Prix moyen au m² : ' + feature.properties.a_prix_m2_2018 + '€</div>' +
+			'<div>Prix de vente moyen : ' + feature.properties.a_prix_vente_moyen_2018 + '€</div>' +
+			'<div>Nombre de vente : ' + feature.properties.a_nb_ventes_2018 + '</div>'
+		)
+		.addTo(map)
+		// configurer la largeur maximum du popup
+		.setMaxWidth("300px");
+});
+
+map.on('mousemove', function (e) {
+	var features = map.queryRenderedFeatures(e.point, {
+		layers: ['dvf-iris','dvf-iris-toulouse']
+	});
+	map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+});
+
+
+// masquer une couche
+function masquerOui() {
+	map.setLayoutProperty('dvf-iris', 'visibility', 'none');
+}
+// démasquer une couche
+function masquerNon() {
+	map.setLayoutProperty('dvf-iris', 'visibility', 'visible');
+}
+// changer le style d’une couche
+function changerOui() {
+	map.setPaintProperty('dvf-iris', 'fill-color', ['interpolate', ['linear'],
+		['get', 'p16_rp_lochlmv_p'], 0, '#ffffff', 60, '#f44336'
+	]);
+}
+// revenir au style initial de la couche
+function changerNon() {
+	map.setPaintProperty('dvf-iris', 'fill-color', ['interpolate', ['linear'],
+		['get', 'a_prix_m2_2018'], 0, '#ffffff', 500, '#00bdd6', 2500, '#ffd54d', 5000, '#f44034', 6000, '#b71c1c'
+	]);
+}
+// filtrer les données de plusieurs couches
+function filtrerOui() {
+	map.setFilter('dvf-iris', ['==', 'dep', '69']);
+	map.setFilter('dvf-iris-lignes', ['==', 'dep', '69']);
+	map.setFilter('dvf-iris-points', ['==', 'dep', '69']);
+}
+// ne plus filtrer les couches (revenir aux données initiales des couches)
+function filtrerNon() {
+	map.setFilter('dvf-iris', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
+	map.setFilter('dvf-iris-lignes', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
+	map.setFilter('dvf-iris-points', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
+}
+function zoomToulouse() {
+	map.flyTo({center: [1.444534047371576, 43.604540410959885], zoom: 11.5});
+}
+
+// importer une ou plusieurs couches qui sont stocker dans un site web
+map.on('load', function () {
+ map.addSource('importation-dvf-iris-toulouse', {
+   'type': 'geojson',
+   'data': 'https://raw.githubusercontent.com/visualizemap/formations/master/data/dvf-iris-toulouse.geojson?token=AMG76SSTJU6PLWCCEH5UBTC6SWQBY',
+ });
+
+ map.addLayer({
+   'id': 'dvf-iris-toulouse',
+   'type': 'fill',
+   'source': 'importation-dvf-iris-toulouse',
+   'paint': {
+     'fill-color': ['interpolate', ['linear'],
+   		['get', 'a_prix_m2_2018'], 0, '#ffffff', 500, '#00bdd6', 2500, '#ffd54d', 5000, '#f44034', 6000, '#b71c1c'
+   	],
+     'fill-opacity': 0.6
+   }
+ },
+'dvf-iris' // option pour définir la hiérachie de la couche : ici la nouvelle couche se placera juste après la couche dvf-iris
+);
+
+ map.addLayer({
+   'id': 'dvf-iris-lignes-toulouse',
+   'type': 'line',
+   'source': 'importation-dvf-iris-toulouse',
+   "layout": {"line-cap": "round", "line-join": "round"},
+   "paint": {
+       "line-color": "#545454",
+       "line-opacity": 0.15,
+       "line-width": 0.5
+   }
+ },
+'dvf-iris-lignes' // option pour définir la hiérachie de la couche : ici la nouvelle couche se placera juste après la couche dvf-iris
+);
+});
+
+
+map.on('load', function () {
+	map.addSource('importation-dvf-iris-lille', {
+		'type': 'vector',
+		'url': 'mapbox://jairson.dkyszaqp',
+	});
+
+	map.addLayer({
+			'id': 'dvf-iris-lille',
+			'type': 'fill',
+			'source': 'importation-dvf-iris-lille',
+      'source-layer': 'dvf-iris-lille-98l10w', // récupérer le nom du fichier dans mapbox studio
+			'paint': {
+				'fill-color': ['interpolate', ['linear'],
+					['get', 'a_prix_m2_2018'], 0, '#ffffff', 500, '#00bdd6', 2500, '#ffd54d', 5000, '#f44034', 6000, '#b71c1c'
+				],
+				'fill-opacity': 0.6
+			}
+		},
+		'dvf-iris'
+	);
+
+	map.addLayer({
+			'id': 'dvf-iris-lignes-lille',
+			'type': 'line',
+			'source': 'importation-dvf-iris-lille',
+      'source-layer': 'dvf-iris-lille-98l10w', // récupérer le nom du fichier dans mapbox studio
+			"layout": {
+				"line-cap": "round",
+				"line-join": "round"
+			},
+			"paint": {
+				"line-color": "#545454",
+				"line-opacity": 0.15,
+				"line-width": 0.5
+			}
+		},
+		'dvf-iris-lignes'
+	);
+});
+
+      </script>
+   </body>
+</html>
