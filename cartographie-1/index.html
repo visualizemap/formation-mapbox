@@ -124,9 +124,37 @@ map.on('click', function (e) {
 		.setMaxWidth("300px");
 });
 
+
+map.on('click', function (e) {
+	var features = map.queryRenderedFeatures(e.point, {
+		layers: ['dvf-points']
+	});
+	if (!features.length) {
+		return;
+	}
+
+	var feature2 = features[0];
+
+	var popup2 = new mapboxgl.Popup({
+			closeButton: true
+		}) // afficher un bouton de fermeture du popup
+		.setLngLat(map.unproject(e.point))
+		// intégrer du code html dans le popup
+		.setHTML(
+			'<div>Prix au m² : ' + feature2.properties.prix_m2 + '€</div>' +
+			'<div>Prix de vente moyen : ' + feature2.properties.prix_vente + '€</div>' +
+			'<div>Superficie : ' + feature2.properties.surface_reelle_bati + '</div>'+
+			'<div>Nb pièces : ' + feature2.properties.nombre_pieces_principales + '</div>'
+
+		)
+		.addTo(map)
+		// configurer la largeur maximum du popup
+		.setMaxWidth("300px");
+});
+
 map.on('mousemove', function (e) {
 	var features = map.queryRenderedFeatures(e.point, {
-		layers: ['dvf-iris','dvf-iris-toulouse']
+		layers: ['dvf-iris','dvf-iris-toulouse','dvf-points']
 	});
 	map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
 });
@@ -172,7 +200,7 @@ function zoomToulouse() {
 map.on('load', function () {
  map.addSource('importation-dvf-iris-toulouse', {
    'type': 'geojson',
-   'data': 'https://raw.githubusercontent.com/visualizemap/formations/master/data/dvf-iris-toulouse.geojson?token=AMG76SSTJU6PLWCCEH5UBTC6SWQBY',
+   'data': 'https://raw.githubusercontent.com/visualizemap/formation-mapbox/master/data/dvf-iris-toulouse.geojson',
  });
 
  map.addLayer({

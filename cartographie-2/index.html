@@ -134,35 +134,31 @@ map.on('mousemove', function (e) {
 
 // masquer une couche
 function masquerOui() {
-	map.setLayoutProperty('dvf-iris', 'visibility', 'none');
+	map.setLayoutProperty('carreaux', 'visibility', 'none');
 }
 // démasquer une couche
 function masquerNon() {
-	map.setLayoutProperty('dvf-iris', 'visibility', 'visible');
+	map.setLayoutProperty('carreaux', 'visibility', 'visible');
 }
 // changer le style d’une couche
 function changerOui() {
-	map.setPaintProperty('dvf-iris', 'fill-color', ['interpolate', ['linear'],
-		['get', 'p16_log'], 0, '#00bcd4', 2000, '#f44336'
-	]);
+    map.setPaintProperty('carreaux', 'fill-extrusion-color', ['interpolate', ['linear'],
+    ['get', 'niv_vie'], 8000, '#00bcd4', 21405, '#ffe0b2', 32014, '#f44336', 40425, '#b71c1c'
+    ]);
 }
 // revenir au style initial de la couche
 function changerNon() {
-	map.setPaintProperty('dvf-iris', 'fill-color', ['interpolate', ['linear'],
-		['get', 'a_prix_m2_2018'], 0, '#ffffff', 500, '#00bdd6', 2500, '#ffd54d', 5000, '#f44034', 6000, '#b71c1c'
-	]);
+    map.setPaintProperty('carreaux', 'fill-extrusion-color', ['interpolate', ['linear'],
+    ['get', 'log_socp'], 0, '#ffffff', 60, '#f44336', 100, '#b71c1c'
+    ]);
 }
 // filtrer les données de plusieurs couches
 function filtrerOui() {
-	map.setFilter('dvf-iris', ['==', 'dep', '69']);
-	map.setFilter('dvf-iris-lignes', ['==', 'dep', '69']);
-	map.setFilter('dvf-iris-points', ['==', 'dep', '69']);
+	map.setFilter('carreaux', ["all",[">=", ["get", "ind"], 1000]]);
 }
 // ne plus filtrer les couches (revenir aux données initiales des couches)
 function filtrerNon() {
-	map.setFilter('dvf-iris', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
-	map.setFilter('dvf-iris-lignes', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
-	map.setFilter('dvf-iris-points', ['in', 'dep', '01', '03', '07', '15', '26', '38', '42', '43', '63', '69', '73', '74']);
+	map.setFilter('carreaux', ["all",[">=", ["get", "ind"], 100]]);
 }
 function zoomToulouse() {
 	map.flyTo({center: [1.444534047371576, 43.604540410959885], zoom: 11.5});
