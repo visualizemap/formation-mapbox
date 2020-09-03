@@ -94,10 +94,15 @@
         // filtrer sur colonne 'p17_pop' sur la couche 'communes' et 'communes-lignes'
 
         slider.noUiSlider.on('update', function () {
-            var valMin = parseFloat(slider.noUiSlider.get()[0]);
-            var valMax = parseFloat(slider.noUiSlider.get()[1]);
-            map.setFilter('communes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
-            map.setFilter('communes-lignes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
+            try {
+                var valMin = parseFloat(slider.noUiSlider.get()[0]);
+                var valMax = parseFloat(slider.noUiSlider.get()[1]);
+                map.setFilter('communes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
+                map.setFilter('communes-lignes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
+            }
+            catch (err) {
+
+            }
         });
 
     </script>
