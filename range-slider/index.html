@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Exemple Slider Communes</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- sources mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <!-- sources slider nouislider -->
+    <link href="nouislider.css" rel="stylesheet">
+    <script src="nouislider.js"></script>
+    <!-- sources wNumb pour slider -->
+    <script src="wNumb.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* modifier la couleur du slider */
+        .noUi-connect {
+            background: #03A9F4;
+        }
+
+        /* afficher le tooltip du slider uniquement lorsque l'on clique dessus */
+        .noUi-tooltip {
+            display: none;
+        }
+
+        .noUi-active .noUi-tooltip {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div style='max-width:250px; margin: auto; top: 50px' id="slider"></div>
+
+    <script>
+        // access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamFpcnNvbiIsImEiOiJjazhvZHAwcGowdDA3M21yeHAwdHUwYXp4In0.-gJk9r_w3o1F3A5ns6UQGw';
+        // importer la carte dans le document html
+        var map = new mapboxgl.Map({
+            // container id
+            container: 'map',
+            // style de la carte
+            style: 'mapbox://styles/jairson/ckekbwh0407dr19nsgpte0be3',
+            // localisation et zoom par défaut - Lyon
+            center: [4.859171776685287, 45.73291396168358],
+            // zoom par défaut
+            zoom: 9,
+            // copyright (afficher le copyright oui ou non)
+            attributionControl: true
+
+        });
+
+        // importation du slider et paramétrage
+        var slider = document.getElementById('slider');
+
+        noUiSlider.create(slider, {
+            start: [0, 2000000],
+            step: 1000,
+            connect: true,
+            snap: true,
+            tooltips: true,
+            format: wNumb({ decimals: 0 }),
+            range: {
+                'min': [0],
+                '10%': [1000],
+                '20%': [2000],
+                '30%': [4000],
+                '40%': [8000],
+                '50%': [16000],
+                '60%': [32000],
+                '70%': [64000],
+                '80%': [128000],
+                '90%': [256000],
+                'max': [2000000]
+            }
+        });
+
+        // filtrer les données de la carte en fonction des valeurs min et max du slider (en récupérant l'info sur le slider)
+        // filtrer sur colonne 'p17_pop' sur la couche 'communes' et 'communes-lignes'
+        slider.addEventListener('click', function () {
+            var valMin = parseFloat(slider.noUiSlider.get()[0]);
+            var valMax = parseFloat(slider.noUiSlider.get()[1]);
+            map.setFilter('communes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
+            map.setFilter('communes-lignes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
+        });
+    </script>
+
+</body>
+
+</html>
