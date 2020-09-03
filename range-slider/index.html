@@ -92,12 +92,14 @@
 
         // filtrer les données de la carte en fonction des valeurs min et max du slider (en récupérant l'info sur le slider)
         // filtrer sur colonne 'p17_pop' sur la couche 'communes' et 'communes-lignes'
-        slider.addEventListener('touchmove', function () {
+
+        slider.noUiSlider.on('update', function () {
             var valMin = parseFloat(slider.noUiSlider.get()[0]);
             var valMax = parseFloat(slider.noUiSlider.get()[1]);
             map.setFilter('communes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
             map.setFilter('communes-lignes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
         });
+
     </script>
 
 </body>
