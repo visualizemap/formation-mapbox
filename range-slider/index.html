@@ -90,9 +90,8 @@
             }
         });
 
-        // filtrer les données de la carte en fonction des valeurs min et max du slider (en récupérant l'info sur le slider)
-        // filtrer sur colonne 'p17_pop' sur la couche 'communes' et 'communes-lignes'
-
+        // filtrer les données de la carte en fonction des valeurs min et max du slider quand il y a un changement
+        // filtrer sur colonne 'p17_pop' de la couche 'communes' et 'communes-lignes' 
         slider.noUiSlider.on('update', function () {
             try {
                 var valMin = parseFloat(slider.noUiSlider.get()[0]);
