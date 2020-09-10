@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Communes</title>
+    <!-- meta -->
+    <meta charset="utf-8" />
+    <meta name="description" content="Cartographie données socio-démographiques de l’INSEE.">
+    <meta name="keywords" content="cartographie, data, données, insee, mapbox, visualizemap, population">
+    <meta name="author" content="Jairson Ribeiro Barradas">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- favicon -->
+    <link rel="icon" type="image/png"
+        href="https://raw.githubusercontent.com/visualizemap/visualizefrance/master/documents/favicon.png">
+    <!-- assembly -->
+    <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
+    <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+    <!-- mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
+        rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/nouislider.css">
+    <!-- visualizemap css -->
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+    <!-- sources slider nouislider -->
+    <script src="js/nouislider.js"></script>
+    <!-- sources wNumb pour slider -->
+    <script src="js/wNumb.js"></script>
+
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 1;
+        }
+
+        /* modifier la couleur du slider */
+        .noUi-connect {
+            background: rgba(0, 0, 0, 0.0);
+            z-index: 3;
+
+        }
+
+        .noUi-connects {
+            z-index: 3;
+            background: linear-gradient(to right, rgba(0, 188, 212, 0.3) 0%, rgba(255, 248, 225, 0.8) 10%, rgba(255, 236, 179, 0.8) 20%, rgba(255, 224, 130, 0.8) 30%, rgba(255, 202, 40, 0.8) 40%, rgba(255, 179, 0, 0.8) 50%, rgba(255, 112, 67, 0.8) 60%, rgba(244, 81, 30, 0.8) 70%, rgba(239, 83, 80, 0.8) 80%, rgba(229, 57, 53, 0.8) 100%);
+        }
+
+        /* afficher le tooltip du slider uniquement lorsque l'on clique dessus */
+        .noUi-tooltip {
+            display: none;
+            z-index: 3;
+
+        }
+
+        .noUi-active .noUi-tooltip {
+            z-index: 3;
+
+            display: block;
+        }
+    </style>
+</head>
+
+<body id="body" class="color-gray">
+    <!-- map -->
+    <div id="map"></div>
+    <!-- geocoder -->
+    <div id="geocoder" class="geocoder"></div>
+    <!-- mapbox popup -->
+    <div id="tabpopup"></div>
+    <!-- slider !-->
+
+
+    <!-- loader !-->
+
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende -->
+    <!-- Légende bouton -->
+    <button class="infos-legendes btn btn--s w30 h30 bg-white shadow-darken10 z1" onclick="infosFunction()"></button>
+    <!-- Légende titre -->
+    <div id="infosDiv" class="ctrl-infos-legendes">
+        <div class="font-size-13 txt-bold py12 px18 border-b border--darken10">Description</div>
+        <!-- Légende infos -->
+        <div class="py12 px18 border-b border--darken10">
+            <div class="txt-bold">Cartographie interactive données socio-démographiques de l’Insee</div>
+            <div class="txt-normal">Analysez les communes de France métropolitaine, Martinique et La Réunion, avec
+                plusieurs indicateurs clés de l’Insee concernant les caractéristiques de la population : groupes d’âges,
+                professions et catégories socioprofessionnelles, salaires net horaire moyen et revenus disponibles par
+                unité de consommation.</div>
+        </div>
+        <!-- Légende infos -->
+        <div class="py12 px18 bg-darken5 border-b border--darken10">
+            <div class="txt-bold">Périmètre de la cartographie et des données</div>
+            <div class="txt-normal">Les données sont produites par l’Insee et portent sur l'année <kbd
+                    class='txt-kbd'>2016</kbd>.</div>
+        </div>
+
+        <!-- Légende questions  -->
+        <div class="py12 px18 border-b border--darken10">
+            <div class="txt-bold">Questions & remarques</div>
+            <div class="txt-normal">Vous avez des questions ou des remarques ? Vous souhaitez en savoir plus sur la
+                réalisation de cette application web ? N’hésitez pas à nous contacter et nous vous répondrons dans les
+                plus brefs délais. <a class='link' href="mailto:visualizemap@gamail.com?Subject=Informations"
+                    target="_top">Contactez-nous</a></div>
+        </div>
+        <!-- Légende sources -->
+        <div class='py12 px18 bg-darken5'>
+            <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
+            <a href="http://www.openstreetmap.org/about/" target="_blank">© OpenStreetMap</a>
+            <a href="https://www.insee.fr/" target="_blank">© Insee</a>
+            <a href="https://visualizemap.com/" target="_blank">© visualizemap</a>
+            <a class="txt-bold" href="https://www.linkedin.com/in/jairsonribeirobarradas/" target="_blank">
+                Made with
+                <svg class='icon inline color-red'>
+                    <use xlink:href='#icon-heart' />
+                </svg>
+                by
+                Jairson Ribeiro Barradas
+            </a>
+        </div>
+    </div>
+
+
+    <!-- legende -->
+
+    <div style="z-index:2; position: absolute; bottom: 48px; right: 12px;"
+        class="w300 round bg-white shadow-darken10 px12 py12 txt-s">
+        <strong class="block mb6">Population 2017 par communes</strong>
+        <div class="grid mb6">
+            <div class='mr12 ml12 mt6 mb6 w300 ' id="slider"></div>
+
+
+        </div>
+        <div class="grid txt-xs">
+            <div class="col flex-child--grow">0</div>
+            <div class="col flex-child--grow align-r">256 000+</div>
+        </div>
+        <div class="txt-xs opacity75">Filtrer les communes en fonction du nombre d'habitants à l'aide du curseur.</div>
+    </div>
+
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <!-- js script -->
+    <script src="js/configuration.js"></script>
+
+    <script src="js/slider.js"></script>
+
+
+
+    <script src="js/control.js"></script>
+    <script src="js/insert.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/filter.js"></script>
+    <script src="js/localgeocoder.js"></script>
+</body>
+
+</html>
+<!-- Made with love by Jairson Ribeiro Barradas aka visualizemap -->

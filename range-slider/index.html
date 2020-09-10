@@ -29,7 +29,11 @@
 
         /* modifier la couleur du slider */
         .noUi-connect {
-            background: #03A9F4;
+            background: rgba(0, 0, 0, 0.0);
+        }
+
+        .noUi-connects {
+            background: linear-gradient(to right, rgba(0, 188, 212, 0.3) 0%, rgba(255, 248, 225, 0.8) 10%, rgba(255, 236, 179, 0.8) 20%, rgba(255, 224, 130, 0.8) 30%, rgba(255, 202, 40, 0.8) 40%, rgba(255, 179, 0, 0.8) 50%, rgba(255, 112, 67, 0.8) 60%, rgba(244, 81, 30, 0.8) 70%, rgba(239, 83, 80, 0.8) 80%, rgba(229, 57, 53, 0.8) 100%);
         }
 
         /* afficher le tooltip du slider uniquement lorsque l'on clique dessus */
@@ -69,24 +73,33 @@
         var slider = document.getElementById('slider');
 
         noUiSlider.create(slider, {
-            start: [0, 2000000],
-            step: 1000,
+            start: [0, 512000],
             connect: true,
             snap: true,
             tooltips: true,
             format: wNumb({ decimals: 0 }),
             range: {
                 'min': [0],
+                '5%': [500],
                 '10%': [1000],
+                '15%': [2500],
                 '20%': [2000],
+                '25%': [3000],
                 '30%': [4000],
+                '35%': [6000],
                 '40%': [8000],
+                '45%': [12000],
                 '50%': [16000],
+                '55%': [24000],
                 '60%': [32000],
+                '65%': [48000],
                 '70%': [64000],
+                '75%': [96000],
                 '80%': [128000],
+                '85%': [192000],
                 '90%': [256000],
-                'max': [2000000]
+                '95%': [384000],
+                'max': [512000]
             }
         });
 
