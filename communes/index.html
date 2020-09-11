@@ -9,9 +9,6 @@
     <meta name="keywords" content="cartographie, data, données, insee, mapbox, visualizemap, population">
     <meta name="author" content="Jairson Ribeiro Barradas">
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <!-- favicon -->
-    <link rel="icon" type="image/png"
-        href="https://raw.githubusercontent.com/visualizemap/visualizefrance/master/documents/favicon.png">
     <!-- assembly -->
     <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
     <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
@@ -20,11 +17,10 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css" rel="stylesheet" />
     <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
         rel="stylesheet" />
+    <!-- nouislider css -->
     <link rel="stylesheet" type="text/css" href="css/nouislider.css">
     <!-- visualizemap css -->
-
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-
     <!-- sources slider nouislider -->
     <script src="js/nouislider.js"></script>
     <!-- sources wNumb pour slider -->
@@ -97,41 +93,18 @@
         <div class="font-size-13 txt-bold py12 px18 border-b border--darken10">Description</div>
         <!-- Légende infos -->
         <div class="py12 px18 border-b border--darken10">
-            <div class="txt-bold">Cartographie interactive données socio-démographiques de l’Insee</div>
-            <div class="txt-normal">Analysez les communes de France métropolitaine, Martinique et La Réunion, avec
-                plusieurs indicateurs clés de l’Insee concernant les caractéristiques de la population : groupes d’âges,
-                professions et catégories socioprofessionnelles, salaires net horaire moyen et revenus disponibles par
-                unité de consommation.</div>
-        </div>
-        <!-- Légende infos -->
-        <div class="py12 px18 bg-darken5 border-b border--darken10">
-            <div class="txt-bold">Périmètre de la cartographie et des données</div>
-            <div class="txt-normal">Les données sont produites par l’Insee et portent sur l'année <kbd
-                    class='txt-kbd'>2016</kbd>.</div>
+            <div class="txt-bold">Cartographie interactive des données socio-démographiques de l’Insee</div>
+            <div class="txt-normal">Analysez la population des communes de France métropolitaine, Martinique et La
+                Réunion, avec les dernières chiffres de l’Insee.</div>
         </div>
 
-        <!-- Légende questions  -->
-        <div class="py12 px18 border-b border--darken10">
-            <div class="txt-bold">Questions & remarques</div>
-            <div class="txt-normal">Vous avez des questions ou des remarques ? Vous souhaitez en savoir plus sur la
-                réalisation de cette application web ? N’hésitez pas à nous contacter et nous vous répondrons dans les
-                plus brefs délais. <a class='link' href="mailto:visualizemap@gamail.com?Subject=Informations"
-                    target="_top">Contactez-nous</a></div>
-        </div>
         <!-- Légende sources -->
         <div class='py12 px18 bg-darken5'>
             <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
             <a href="http://www.openstreetmap.org/about/" target="_blank">© OpenStreetMap</a>
             <a href="https://www.insee.fr/" target="_blank">© Insee</a>
-            <a href="https://visualizemap.com/" target="_blank">© visualizemap</a>
-            <a class="txt-bold" href="https://www.linkedin.com/in/jairsonribeirobarradas/" target="_blank">
-                Made with
-                <svg class='icon inline color-red'>
-                    <use xlink:href='#icon-heart' />
-                </svg>
-                by
-                Jairson Ribeiro Barradas
-            </a>
+            <a href="https://geoservices.ign.fr/documentation/" target="_blank">© IGN</a>
+
         </div>
     </div>
 
@@ -140,17 +113,17 @@
 
     <div style="z-index:2; position: absolute; bottom: 72px; right: 12px;"
         class="w300 round bg-white shadow-darken10 px12 py12 txt-s">
-        <strong class="block mb6">Population 2017 par communes</strong>
+        <strong class="block mb6">Population par commune en 2017</strong>
         <div class="grid mb6">
             <div class='mr12 ml12 mt6 mb6 w300 ' id="slider"></div>
-
 
         </div>
         <div class="grid txt-xs">
             <div class="col flex-child--grow">0</div>
             <div class="col flex-child--grow align-r">256 000+</div>
         </div>
-        <div class="txt-xs opacity75">Filtrer les communes en fonction du nombre d'habitants à l'aide du curseur.</div>
+        <div class="txt-xs opacity75">Filtrez les communes en fonction du nombre d'habitants à l'aide des curseurs.
+        </div>
     </div>
 
     <!-- js script -->
@@ -167,9 +140,6 @@
     <script src="js/configuration.js"></script>
 
     <script src="js/slider.js"></script>
-
-
-
     <script src="js/control.js"></script>
     <script src="js/insert.js"></script>
     <script src="js/menu.js"></script>
