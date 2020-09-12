@@ -4,7 +4,7 @@ var map = new mapboxgl.Map({
 	container: 'map', // container id
 	style: 'mapbox://styles/jairson/ckekbwh0407dr19nsgpte0be3', // stylesheet location
 	center: [4.859171776685287, 45.73291396168358], // lyon starting position [lng, lat]
-	zoom: 8.2, // starting zoom
+	zoom: 7.2, // starting zoom
 
 	attributionControl: false
 });

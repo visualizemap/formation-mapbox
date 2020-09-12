@@ -40,6 +40,7 @@ slider.noUiSlider.on('update', function () {
         else (valMax = parseFloat(slider.noUiSlider.get()[1]))
         map.setFilter('communes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
         map.setFilter('communes-lignes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
+        map.setFilter('communeslignes', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]); // communes hover
         map.setFilter('communes-centroides', ["all", [">=", ["get", "p17_pop"], valMin], ["<=", ["get", "p17_pop"], valMax]]);
 
     }
